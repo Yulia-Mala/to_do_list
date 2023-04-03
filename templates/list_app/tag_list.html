@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <br>
+  <h3><a class="btn-lg" href="{% url "tag-create" %}">Add tag</a></h3>
+    {% if tag_list %}
+    <table class="table">
+      <tr>
+        <th>Tag</th>
+        <th></th>
+        <th></th>
+      </tr>
+    {% for tag in tag_list %}
+      <tr>
+        <td>{{ tag.text }}</td>
+        <td><a href="{% url "tag-update" pk=tag.id %}">Update</a></td>
+        <td><a style="color: red" href="{% url "tag-delete" pk=tag.id %}">Delete</a> </td>
+      </tr>
+    {% endfor %}
+
+    </table>
+    {% else %}
+      <p>There are no tags at the moment </p>
+      <br>
+      <p>Would you like to <a href="{% url "tag-create" %}">create</a> some? ;)</p>
+    {% endif %}
+
+{% endblock %}

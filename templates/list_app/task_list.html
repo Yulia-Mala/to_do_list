@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <br>
+  <h3><a class="btn-lg" href="{% url "task-create" %}">Add task</a></h3>
+    {% if task_list %}
+      {% for task in task_list %}
+        <ul class="list-group">
+          <li class="list-group-item">
+            {{ task.content }}
+          <p class="float-right"><a href="{% url "change-status" pk=task.id %}">
+          {% if task.is_done %}
+            <span class="btn btn-secondary">Undo</span>
+          {% else %}
+            <span class="btn btn-success">Mark as done</span>
+          {% endif %}
+          </a></p>
+            {% if task.is_done %}
+              <span style="color: green">Done</span>
+            {% else %}
+              <span style="color: red">Not done</span>
+            {% endif %}
+            <p>Created at {{ task.creation_date }}</p>
+          <p> {% if task.deadline %}
+          <span style="color: brown">Deadline: {{ task.deadline }}</span>
+          {% endif %} </p>
+            <p>Tags: {% for tag  in task.tags.all %}
+              {{ tag }}
+            {% endfor %}
+            </p>
+          <p>
+            <a class="btn btn-primary" href="{% url "task-update" pk=task.id %}">Update</a>
+            <a class="btn btn-danger" href="{% url "task-delete" pk=task.id %}">Delete</a>
+          </p>
+         </li>
+
+    </ul>
+      {% endfor %}
+
+  {% else %}
+    <br>
+    <p>There are no tasks at the moment </p>
+    <br>
+      <p>Would you like to <a href="{% url "task-create" %}">create</a> some? ;)</p>
+  {% endif %}
+
+{% endblock %}
